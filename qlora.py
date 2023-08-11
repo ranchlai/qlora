@@ -190,15 +190,15 @@ class TrainingArguments(transformers.Seq2SeqTrainingArguments):
         default=80000,
         metadata={"help": "Free memory per gpu."}
     )
-    report_to: str = field(
-        default='none',
-        metadata={"help": "To use wandb or something else for reporting."}
-    )
+    # report_to: str = field(
+    #     default='none',
+    #     metadata={"help": "To use wandb or something else for reporting."}
+    # )
     output_dir: str = field(default='./output', metadata={"help": 'The output dir for logs and checkpoints'})
     optim: str = field(default='paged_adamw_32bit', metadata={"help": 'The optimizer to be used'})
     per_device_train_batch_size: int = field(default=1, metadata={"help": 'The training batch size per GPU. Increase for better speed.'})
     gradient_accumulation_steps: int = field(default=16, metadata={"help": 'How many gradients to accumulate before to perform an optimizer step'})
-    max_steps: int = field(default=10000, metadata={"help": 'How many optimizer update steps to take'})
+    max_steps: int = field(default=-1, metadata={"help": 'How many optimizer update steps to take'})
     weight_decay: float = field(default=0.0, metadata={"help": 'The L2 weight decay rate of AdamW'}) # use lora dropout instead for regularization if needed
     learning_rate: float = field(default=0.0002, metadata={"help": 'The learnign rate'})
     remove_unused_columns: bool = field(default=False, metadata={"help": 'Removed unused columns. Needed to make this codebase work.'})
@@ -708,7 +708,7 @@ def train():
     set_seed(args.seed)
 
     data_module = make_data_module(tokenizer=tokenizer, args=args)
-    
+    import pdb; pdb.set_trace()
     trainer = Seq2SeqTrainer(
         model=model,
         tokenizer=tokenizer,
